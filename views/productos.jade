@@ -1,0 +1,109 @@
+extends layout
+
+block content
+
+  .row(id="productos") 
+    
+    .col-sm-12 
+      .panel.panel-default
+          .panel-heading 
+            h1.page-header #{title}            
+              a(href="#" data-toggle="modal" data-target="#createModal" v-on:click="limpiarDatos()").btn.btn-default.pull-right Agregar un Producto <i class="fa fa-plus" aria-hidden="true"></i>
+    
+    .col-sm-12
+      .grid        
+        .grid-item.grid-sizer(v-for="producto in productos")               
+          .thumbnail
+            img(src="/img/img1.jpg")
+            .caption
+              p
+                strong {{ producto.nombre }}    
+              p(class="text-muted") de {{ producto.marca }}
+              p(class="text-info")  
+                em {{ producto.descripcion }}
+              hr
+              .clearfix
+                div(class="pull-left")  
+                  p(class="text-danger") $ {{producto.precio}}
+                a(href="#" data-toggle="modal" data-target="#editModal" v-on:click="editProducto(producto.productoid)").btn.btn-warning.btn-sm.pull-right Editar
+                a(href="#" v-on:click="deleteProducto(producto.productoid)").btn.btn-sm.btn-danger.pull-right Eliminar                
+    
+    .col-sm-12
+      pre {{ $data.productos }}
+        
+    .modal.fade(id="editModal")
+      .modal-dialog
+        .modal-content
+          .modal-header
+            button(type="button" data-dismiss="modal" aria-hidden="true").close &times;
+            h4.modal-title Editar producto
+          .modal-body
+            form( v-on:submit.prevent="updateProducto").form-horizontal
+              .form-group
+                label(for="inputNombre").control-label.col-lg-2 Nombre
+                .col-lg-10  
+                  input(type="text" name="nombre" v-model="producto.nombre"  id="inputNombre" autofocus).form-control.input-sm
+
+              .form-group
+                label(for="inputMarcaid").control-label.col-lg-2 Marca
+                .col-lg-10  
+                  select(v-model="producto.marcaid").form-control.input-sm 
+                    option(v-bind:value="producto.marcaid") {{ producto.marca }}                    
+                    option(v-for="marca in marcas" v-bind:value="marca.marcaid") {{ marca.nombre }} 
+
+              .form-group
+                label(for="inputPrecio").control-label.col-lg-2 Precio
+                .col-lg-10
+                  input(type="text" name="nombre" v-model="producto.precio"  id="inputPrecio").form-control.input-sm
+
+              .form-group
+                label(for="inputDescripcion").control-label.col-lg-2 Descripción
+                .col-lg-10
+                  textarea(name="descripcion" id="inputDescripcion" rows="2" v-model="producto.descripcion" ).form-control.input-sm 
+                  span.help-block Una descripción breve del producto 
+
+              input(type="hidden" name="productoid" v-model="producto.productoid")
+              .form-group
+                .col-lg-12
+                  button(type="button" data-dismiss="modal").btn.btn-default.btn-sm.pull-right Cancelar                
+                  button(type="submit").btn.btn-primary.btn-sm.pull-right Guardar cambios
+              pre {{ $data.producto }}
+
+    .modal.fade(id="createModal")
+      .modal-dialog
+        .modal-content
+          .modal-header
+            button(type="button" data-dismiss="modal" aria-hidden="true").close &times;
+            h4.modal-title Registrar producto
+          .modal-body
+            form( v-on:submit.prevent="createProducto").form-horizontal
+              .form-group
+                label(for="inputNombre").control-label.col-lg-2 Nombre
+                .col-lg-10  
+                  input(type="text" name="nombre" v-model="nuevoProducto.nombre"  id="inputNombre").form-control.input-sm
+
+              .form-group
+                label(for="inputMarcaid").control-label.col-lg-2 Marca
+                .col-lg-10  
+                  select(v-model="nuevoProducto.marcaid").form-control.input-sm
+                    
+                    option(v-for="marca in marcas" v-bind:value="marca.marcaid") {{ marca.nombre}} 
+                    option(selected="selected") --Selecciona una opción--          
+
+              .form-group
+                label(for="inputPrecio").control-label.col-lg-2 Precio
+                .col-lg-10
+                  input(type="text" name="nombre" v-model="nuevoProducto.precio"  id="inputPrecio").form-control.input-sm
+
+              .form-group
+                label(for="inputDescripcion").control-label.col-lg-2 Descripción
+                .col-lg-10
+                  textarea(name="descripcion" id="inputDescripcion" rows="2" v-model="nuevoProducto.descripcion" ).form-control.input-sm 
+                  span.help-block Una descripción breve del producto 
+
+              input(type="hidden" name="productoid" v-model="nuevoProducto.productoid")
+              .form-group
+                .col-lg-12
+                  button(type="button" data-dismiss="modal").btn.btn-default.btn-sm.pull-right Cancelar                
+                  button(type="submit").btn.btn-primary.btn-sm.pull-right Guardar registro
+              pre {{ $data.nuevoProducto }}

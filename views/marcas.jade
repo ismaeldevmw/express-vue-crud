@@ -1,0 +1,61 @@
+extends layout
+
+block content  
+
+  .row(id="marcas")
+    .col-sm-12
+      .panel.panel-default
+        .panel-heading
+          h1.page-header #{title}
+            button(type="button" data-toggle="modal" data-target="#createModal" v-on:click="limpiarDatos()").btn.btn-default.pull-right Agregar una Marca <i class="fa fa-plus" aria-hidden="true"></i>
+        .panel-body
+          .table-responsive
+            table.table.table-hover.table-striped
+              thead
+                tr
+                  th Nombre
+                  th(colspan="2") &nbsp;
+              tbody
+                
+                  tr(v-for="marca in marcas")
+                    td {{ marca.nombre }}    
+                    td: button(type="button" data-toggle="modal" data-target="#editModal" v-on:click="editMarca(marca.marcaid)").btn.btn-sm.btn-warning Editar   
+                    td(v-if="showBorrar != marca.marcaid") 
+                      button( v-on:click="borrarMarca(marca.marcaid)").btn.btn-sm.btn-danger Eliminar
+                    td(v-else)
+                      p.text-danger ¿Estás seguro de querer borrarlo?                                                
+                      button(v-on:click="confirmarBorrado(marca.marcaid)").btn.btn-sm.btn-danger Borrar
+                      button(v-on:click="cancelarBorrado()").btn.btn-sm.btn-default Cancelar
+
+    .col-sm-12
+      pre {{ $data}}
+          
+    .modal.fade(id="createModal")
+      .modal-dialog
+        .modal-content
+          .modal-header
+            button(type="button" data-dismiss="modal" aria-hidden="true").close &times;
+            h4.modal-title Registrar marca
+          .modal-body
+            form(id="form-crear-marca" v-on:submit.prevent="createMarca")
+              .form-group
+                input(type="text" name="nombre" v-model="nuevaMarca.nombre").form-control
+              .form-group.clearfix
+                button(type="button" data-dismiss="modal").btn.btn-default.btn-sm.pull-right Cancelar                
+                button(type="submit").btn.btn-success.btn-sm.pull-right Guardar registro
+
+    .modal.fade(id="editModal")
+      .modal-dialog
+        .modal-content
+          .modal-header
+            button(type="button" data-dismiss="modal" aria-hidden="true").close &times;
+            h4.modal-title Editar marca
+          .modal-body
+            form( v-on:submit.prevent="updateMarca")
+              .form-group
+                input(type="text" name="nombre" v-model="marca.nombre").form-control
+              input(type="hidden" name="marcaid" v-model="marca.marcaid")
+              .form-group.clearfix
+                button(type="button" data-dismiss="modal").btn.btn-default.btn-sm.pull-right Cancelar                
+                button(type="submit").btn.btn-warning.btn-sm.pull-right Guardar cambios
+  

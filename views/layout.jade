@@ -1,0 +1,36 @@
+doctype html
+html
+  head
+    meta(name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1")
+    title=title
+
+    link(rel='stylesheet', href='/css/app.css')
+    
+  body
+    nav.navbar.navbar-default
+      .container-fluid
+        .navbar-header
+          button(type="button" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false").navbar-toggle.collapsed
+            span.sr-only Toggle navigation
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+          a(href="#").navbar-brand DevShop
+
+        .collapse.navbar-collapse#bs-example-navbar-collapse-1
+          ul.nav.navbar-nav.navbar-right
+            li: a(href="/productos") <i class="fa fa-shopping-bag" aria-hidden="true"></i> Productos
+            li: a(href="/marcas") <i class="fa fa-flag" aria-hidden="true"></i> Marcas
+            li.dropdown
+              a(href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" data-placement="top" title="Ver perfil y más").dropdown-toggle <i class="fa fa-user" aria-hidden="true"></i>  <i class="fa fa-caret-down" aria-hidden="true"></i>
+              ul.dropdown-menu
+                li: a(href="#") Mi cuenta
+                li(role="separator").divider
+                li: a(href="#") Salir
+
+    .container
+      block content
+
+  script(src="/js/app.js")    
+
+    
